@@ -43,3 +43,4 @@ class Interface:
     def __print_right(self, *args):
         print('\033[s\033[3C\033[3;33m', *args, '\033[0m\033[u', end='')
         sys.stdout.flush()
+

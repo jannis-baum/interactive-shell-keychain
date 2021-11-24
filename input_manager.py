@@ -60,3 +60,4 @@ class InputManager:
     
     def exit(self):
         self.__active = False
+
