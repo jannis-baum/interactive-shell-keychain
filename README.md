@@ -1,2 +1,2 @@
-# shell-spotlight
+# interactive shell keychain access
 
