@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 import csv, subprocess, argparse
-
-KEYCHAIN_NAME = 'icloud-local.keychain'
+import config
 
 def resetKeychain():
-    subprocess.call(['security', 'delete-keychain', KEYCHAIN_NAME], stderr=subprocess.DEVNULL)
-    subprocess.call(['security', 'create-keychain', KEYCHAIN_NAME])
+    subprocess.call(['security', 'delete-keychain', config.KEYCHAIN_ICLOUD], stderr=subprocess.DEVNULL)
+    subprocess.call(['security', 'create-keychain', config.KEYCHAIN_ICLOUD])
     # add stop if password incorrect
 
 def importPasswords(source):
@@ -16,7 +15,7 @@ def importPasswords(source):
         idx = { f: n for n, f in enumerate(next(reader)) }
         for row in reader:
             params = ['-l', row[idx['Title']], '-a', row[idx['Username']], '-s', row[idx['Url']], '-w', row[idx['Password']]]
-            subprocess.call(['security', 'add-internet-password'] + params + [KEYCHAIN_NAME])
+            subprocess.call(['security', 'add-internet-password'] + params + [config.KEYCHAIN_ICLOUD])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

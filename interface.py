@@ -1,8 +1,9 @@
 # list of ansi escape codes: https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
 import sys
-from input_manager import InputManager
+from interactive_input import InputManager
 from keychain import Keychain
+import config
 
 class Interface:
     
@@ -18,7 +19,7 @@ class Interface:
     def __init__(self):
         self.__query = ''
         self.__results = []
-        self.__keychain = Keychain([ 'icloud-local.keychain', 'login.keychain'])
+        self.__keychain = Keychain(config.SEARCH_KEYCHAINS)
         self.__chg = InputManager(self.__callback, self.__callback_ansi)
         self.__chg.run()
     

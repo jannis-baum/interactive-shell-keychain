@@ -2,7 +2,7 @@ import sys, tty, termios
 
 class InputManager:
 
-    class ANSIParser:
+    class __ANSIParser:
         # ansi sequences: \\033\[(\d+(;\d+)*)?[A-Za-z]
         #                 ESC [ (N;...) LETTER
         
@@ -44,7 +44,7 @@ class InputManager:
             self.__callback(char)
 
     def __init__(self, callback, callback_ansi):
-        self.ansiParser = InputManager.ANSIParser(callback, callback_ansi)
+        self.ansiParser = InputManager.__ANSIParser(callback, callback_ansi)
 
     def run(self):
         self.__active = True
