@@ -6,7 +6,6 @@ import config
 def resetKeychain():
     subprocess.call(['security', 'delete-keychain', config.KEYCHAIN_ICLOUD], stderr=subprocess.DEVNULL)
     subprocess.call(['security', 'create-keychain', config.KEYCHAIN_ICLOUD])
-    # todo: add retry if password incorrect
 
 def importPasswords(source):
     resetKeychain()
