@@ -2,11 +2,12 @@
 
 import csv, subprocess, argparse
 
-KEYCHAIN_NAME = 'icloud-local'
+KEYCHAIN_NAME = 'icloud-local.keychain'
 
 def resetKeychain():
-    subprocess.call(['security', 'delete-keychain', KEYCHAIN_NAME])
+    subprocess.call(['security', 'delete-keychain', KEYCHAIN_NAME], stderr=subprocess.DEVNULL)
     subprocess.call(['security', 'create-keychain', KEYCHAIN_NAME])
+    # add stop if password incorrect
 
 def importPasswords(source):
     resetKeychain()
