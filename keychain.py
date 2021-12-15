@@ -15,6 +15,7 @@ class Keychain:
             for key, reg in Keychain.KeychainItem.search_atts.items() }
         
         def copy_password(self):
+            # todo: handle errors if can't get password
             subprocess.run([
                 f"security find-internet-password -l '{self.attributes['title']}' -s '{self.attributes['server']}' -a '{self.attributes['account']}' -w {self.attributes['keychain']} | tr -d '\n' | pbcopy"
                 ], shell=True)
