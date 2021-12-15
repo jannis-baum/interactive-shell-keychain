@@ -1,6 +1,6 @@
 # list of ansi escape codes: https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
-import sys
+import sys, os
 from interactive_input import InputManager
 from keychain import Keychain
 import config
@@ -17,9 +17,11 @@ class Interface:
             return str(hex(ord(ch))) == to
 
     def __init__(self):
+        self.__terminal_size = os.get_terminal_size()
         self.__query = ''
         self.__results = []
         self.__keychain = Keychain(config.SEARCH_KEYCHAINS)
+
         self.__chg = InputManager(self.__callback, self.__callback_ansi)
         self.__chg.run()
     
@@ -41,7 +43,9 @@ class Interface:
         else:
             self.__query += char
 
-        print('\r' + self.__query, end='')
+        self.__clear_line()
+        print(self.__query, end='')
+
         self.__results = self.__keychain.find_first(self.__query, 0)
         self.__print_right(
             (lambda r: r[0].attributes['title'] if r else ':(')
@@ -52,7 +56,12 @@ class Interface:
     def __callback_ansi(self, mode, args):
         pass
     
+    def __clear_line(self):
+        print(f"\r{' ' * self.__terminal_size.columns}\r", end='')
+
+
     def __print_right(self, *args):
         print('\033[s\033[3C\033[3;33m', *args, '\033[0m\033[u', end='')
         sys.stdout.flush()
+    
 
