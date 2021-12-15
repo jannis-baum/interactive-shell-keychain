@@ -33,6 +33,7 @@ class Keychain:
         for block in dumped.split(Keychain.splitter) if block]
 
     def find_first(self, query, count = 1):
+        if not query or query == ' ': return []
         res = list()
         for kc_item in self.kc_items:
             if [item for item in kc_item.attributes.values() if item and query in item]:
