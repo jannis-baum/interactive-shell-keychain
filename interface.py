@@ -31,12 +31,14 @@ class Interface:
     
     def __callback(self, char):
         if Interface.Chars.compare(char, Interface.Chars.interrupt):
+            print('\r', end='')
             self.__chg.exit()
             return
 
         elif Interface.Chars.compare(char, Interface.Chars.enter):
             if self.__results:
                 self.__results[self.__results_idx].copy_password()
+                print('\r', end='')
                 self.__chg.exit()
             return
 
