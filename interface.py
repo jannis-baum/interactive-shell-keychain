@@ -65,7 +65,7 @@ class Interface:
         print(f"\r{' ' * os.get_terminal_size().columns}\r", end='')
         print(self.__query, end='')
         self.__print_right(
-            self.__results[self.__results_idx].attributes['title']
+            self.__results[self.__results_idx].attributes['title'] + f'    {self.__results_idx + 1}/{len(self.__results)}'
             if self.__results else ':(')
         sys.stdout.flush()
 
