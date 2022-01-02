@@ -3,10 +3,17 @@ import yaml, subprocess, re
 class Keychain:
     class KeychainItem:
         search_atts = {
-            'keychain': r'^keychain: "([^"]*)"$',
             'title': r'^\s*0x00000007 <blob>="([^"]*)"$',
             'server': r'^\s*"srvr"<blob>="([^"]*)"$',
-            'account': r'\s*"acct"<blob>="([^"]*)"$'
+            'account': r'\s*"acct"<blob>="([^"]*)"$',
+            'keychain': r'^keychain: "([^"]*)"$'
+        }
+
+        __flags = {
+            'title': '-l',
+            'server': '-s',
+            'account': '-a',
+            'keychain': ''
         }
 
         def __init__(self, attributes):
@@ -15,9 +22,12 @@ class Keychain:
             for key, reg in Keychain.KeychainItem.search_atts.items() }
         
         def copy_password(self):
-            subprocess.run([
-                f"security find-internet-password -l '{self.attributes['title']}' -s '{self.attributes['server']}' -a '{self.attributes['account']}' -w {self.attributes['keychain']} | tr -d '\n' | pbcopy"
-                ], shell=True)
+            args = ' '.join([
+                f"{Keychain.KeychainItem.__flags[key]} '{self.attributes[key]}'"
+            for key in Keychain.KeychainItem.search_atts.keys() if self.attributes[key]])
+            if subprocess.run([f"security find-internet-password -w {args} | tr -d '\n' | pbcopy"], capture_output=True, shell=True).stderr:
+                subprocess.run([f"security find-generic-password -w {args} | tr -d '\n' | pbcopy"], shell=True)
+
         
     splitter = 'keychain: '
 
