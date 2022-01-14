@@ -1,4 +1,4 @@
-import yaml, subprocess, re
+import subprocess, re
 
 class Keychain:
     class KeychainItem:
